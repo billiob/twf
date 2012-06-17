@@ -6,6 +6,7 @@
         , request/0
         , path/0
         , user/0, user/1
+        , q/1
         ]).
 
 element_get_module(Element) when is_tuple(Element) ->
@@ -33,7 +34,6 @@ render(Element) when is_tuple(Element) ->
     {module, Module} = code:ensure_loaded(Module),
     Module:render_element(Element).
 
-
 init(Req) ->
     Ctx = #context{request = Req},
     erlang:put(context, Ctx).
@@ -60,8 +60,16 @@ user(Uid) ->
 path() ->
     Ctx = erlang:get(context),
     Req = Ctx#context.request,
-    Req = request(),
     {Res, Req2}  = cowboy_http_req:path(Req),
     Ctx2 = Ctx#context{request = Req2},
     erlang:put(context, Ctx2),
     Res.
+
+q(Binary) ->
+    Ctx = erlang:get(context),
+    Req = Ctx#context.request,
+    {Res, Req2}  = cowboy_http_req:qs_val(Binary, Req),
+    Ctx2 = Ctx#context{request = Req2},
+    erlang:put(context, Ctx2),
+    Res.
+
