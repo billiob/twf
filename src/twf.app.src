@@ -1,0 +1,6 @@
+{application, twf, [
+    {description,  "Tiny Web Framework"},
+    {vsn,          "0.1.0"},
+    {applications, [kernel, stdlib, sasl]},
+    {registered,   []}
+]}.
