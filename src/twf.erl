@@ -5,7 +5,7 @@
         , init/1
         , request/0
         , path/0
-%        , user/0, user/1
+        , user/0, user/1
         ]).
 
 element_get_module(Element) when is_tuple(Element) ->
@@ -44,6 +44,18 @@ request() ->
             undefined;
         Ctx -> Ctx#context.request
     end.
+
+user() ->
+    case erlang:get(context) of
+        undefined ->
+            undefined;
+        Ctx -> Ctx#context.user
+    end.
+
+user(Uid) ->
+    Ctx = erlang:get(context),
+    Ctx2 = Ctx#context{user=Uid},
+    erlang:put(context, Ctx2).
 
 path() ->
     Ctx = erlang:get(context),
