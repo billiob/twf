@@ -1,9 +1,7 @@
 -module (element_template).
 -include_lib ("twf.hrl").
--export([ reflect/0
-        , render_element/1]).
-
-reflect() -> record_info(fields, template).
+-export([ render_element/1
+        ]).
 
 render_element(Record) ->
     % Parse the template file...
