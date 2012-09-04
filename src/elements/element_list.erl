@@ -1,15 +1,15 @@
 -module (element_list).
 -include_lib ("twf.hrl").
--export([ render_element/1
+-export([ render_element/2
         ]).
 
 
-render_element(Record) ->
+render_element(Twf, Record) ->
     Tag = case Record#list.numbered of
         true -> ol;
         _ -> ul
     end,
 
-    twf_tags:emit_tag(Tag, Record#list.body, [
+    twf_tags:emit_tag(Twf, Tag, Record#list.body, [
         {class, Record#list.class}
     ]).

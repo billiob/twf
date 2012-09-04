@@ -1,11 +1,11 @@
 -module (element_form).
 -include_lib ("twf.hrl").
--export([ render_element/1
+-export([ render_element/2
         ]).
 
 
-render_element(Record) ->
-    twf_tags:emit_tag(form, Record#form.body, [
+render_element(Twf, Record) ->
+    twf_tags:emit_tag(Twf, form, Record#form.body, [
         {class, Record#form.class},
         {method, Record#form.method}
     ]).

@@ -1,11 +1,11 @@
 -module (element_link).
 -include_lib ("twf.hrl").
--export([ render_element/1
+-export([ render_element/2
         ]).
 
 
-render_element(Record) ->
-    twf_tags:emit_tag(a, Record#link.body, [
+render_element(Twf, Record) ->
+    twf_tags:emit_tag(Twf, a, Record#link.body, [
         {href, [Record#link.url]},
         {class, Record#link.class}
     ]).

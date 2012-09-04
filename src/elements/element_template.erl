@@ -1,16 +1,16 @@
 -module (element_template).
 -include_lib ("twf.hrl").
--export([ render_element/1
+-export([ render_element/2
         ]).
 
-render_element(Record) ->
+render_element(Twf, Record) ->
     % Parse the template file...
 
     File = Record#template.file,
     Template = parse_template(File),
 
     % Evaluate the template.
-    eval(Template).
+    eval(Twf, Template).
 
 
 %%% PARSE
@@ -84,18 +84,22 @@ parse_callback(B) ->
 
 %%% EVAL
 
-eval([]) -> [];
+eval(Twf, []) -> {[], Twf};
 
-eval([Head | Tail]) when is_binary(Head) ->
-    [Head | eval(Tail)];
+eval(Twf, [Head | Tail]) when is_binary(Head) ->
+    {Elements, Twf2} = eval(Twf, Tail),
+    {[Head | Elements], Twf2};
 
-eval([Head | Tail]) when is_tuple(Head) ->
+eval(Twf, [Head | Tail]) when is_tuple(Head) ->
     {callback, Module, Function, Args} = Head,
 
     {module, Module} = code:ensure_loaded(Module),
-    Elements =
-    case erlang:function_exported(Module, Function, length(Args)) of
-        true -> erlang:apply(Module, Function, Args);
-        false -> []
+    {Elements, Twf2} =
+    case erlang:function_exported(Module, Function, length(Args)+1) of
+        true -> erlang:apply(Module, Function, [Twf |Args]);
+        false -> {[], Twf}
     end,
-    [twf:render(Elements) | eval(Tail)].
+    {ElementsR, Twf3} = twf:render(Twf2, Elements),
+    {Elements2, Twf4} = eval(Twf3, Tail),
+    {ElementsR2, Twf5} = twf:render(Twf4, Elements2),
+    {[ElementsR | ElementsR2], Twf5}.

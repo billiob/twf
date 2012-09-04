@@ -17,35 +17,37 @@
     TagName =/= 'td' andalso
     TagName =/= 'iframe')).
 
--export ([emit_tag/2, emit_tag/3]).
+-export ([emit_tag/3, emit_tag/4]).
 
 %%%  Empty tags %%%
 
-emit_tag(TagName, Props) ->
-    [
+emit_tag(Twf, TagName, Props) ->
+    {[
         <<"<">>,
         erlang:atom_to_binary(TagName, latin1),
         write_props(Props),
         <<"/>">>
-    ].
+    ], Twf}.
 
 %%% Tags with child content %%%
 
 % empty text and body
-emit_tag(TagName, undefined, Props) when ?NO_SHORT_TAGS(TagName) ->
-    emit_tag(TagName, Props);
+emit_tag(Twf, TagName, undefined, Props) when ?NO_SHORT_TAGS(TagName) ->
+    emit_tag(Twf, TagName, Props);
 
-emit_tag(TagName, Content, Props) ->
-    [
+emit_tag(Twf, TagName, Content, Props) ->
+    {Body, Twf2} = twf:render(Twf, Content),
+    TagBinary = erlang:atom_to_binary(TagName, latin1),
+    {[
         <<"<">>,
-        erlang:atom_to_binary(TagName, latin1),
+        TagBinary,
         write_props(Props),
         <<">">>,
-        twf:render(Content),
+        Body,
         <<"</">>,
-        erlang:atom_to_binary(TagName, latin1),
+        TagBinary,
         <<">">>
-    ].
+    ], Twf2}.
 
 %%% Property display functions %%%
 
