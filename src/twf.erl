@@ -1,6 +1,5 @@
 -module (twf).
 -include_lib ("twf.hrl").
--include_lib ("cowboy/include/http.hrl").
 -export([ render/2
         , init/1
         , request/1
@@ -53,7 +52,7 @@ user(Twf = #twf{}, Uid) ->
     Twf#twf{user=Uid}.
 
 path(Twf = #twf{}) ->
-    {Res, Req2}  = cowboy_http_req:path(Twf#twf.request),
+    {Res, Req2}  = cowboy_req:path(Twf#twf.request),
     Twf2 = Twf#twf{request = Req2},
     {Res, Twf2}.
 
