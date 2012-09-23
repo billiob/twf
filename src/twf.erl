@@ -5,7 +5,7 @@
         , request/1
         , path/1
         , user/1, user/2
-        %, q/1
+        , q/2
         ]).
 
 element_get_module(Element) when is_tuple(Element) ->
@@ -56,7 +56,9 @@ path(Twf = #twf{}) ->
     Twf2 = Twf#twf{request = Req2},
     {Res, Twf2}.
 
-%q(Binary) ->
+q(Twf, Binary) ->
+    % TODO
+    {undefined, Twf}.
 %    Ctx = erlang:get(context),
 %    Req = Ctx#context.request,
 %    {Res, Req2}  = cowboy_http_req:qs_val(Binary, Req),
