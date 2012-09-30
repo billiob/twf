@@ -57,10 +57,20 @@ path(Twf = #twf{}) ->
     Twf2 = Twf#twf{request = Req2},
     {Res, Twf2}.
 
+
 q(Twf, Binary) ->
     case method(Twf) of
         'POST' ->
-            {undefined, Twf}; %TODO
+            Twf2 = case Twf#twf.form_values of
+                undefined ->
+                    {ok, BodyQS, Req} = cowboy_req:body_qs(Twf#twf.request),
+                    Twf#twf{request = Req, form_values = BodyQS};
+                _ -> Twf
+            end,
+            case lists:keyfind(Binary, 1, Twf2#twf.form_values) of
+                {Binary, Value} -> {Value, Twf2};
+                false -> {undefined, Twf2}
+            end;
         'GET' ->
             {Res, Req} = cowboy_req:qs_val(Binary, Twf#twf.request),
             Twf2 = Twf#twf{request = Req},

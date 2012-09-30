@@ -18,4 +18,4 @@
         align, valign, colspan, rowspan}).
 
 
--record(twf, {request, user}).
+-record(twf, {request, user, form_values=undefined}).
