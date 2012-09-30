@@ -6,6 +6,7 @@
         , path/1
         , user/1, user/2
         , q/2
+        , method/1
         ]).
 
 element_get_module(Element) when is_tuple(Element) ->
@@ -66,3 +67,7 @@ q(Twf, Binary) ->
 %    erlang:put(context, Ctx2),
 %    Res.
 
+-spec method(Twf) -> cowboy_http:method() when Twf :: #twf{}.
+method(Twf) ->
+    {Method, _} = cowboy_req:method(Twf#twf.request),
+    Method.
