@@ -58,14 +58,14 @@ path(Twf = #twf{}) ->
     {Res, Twf2}.
 
 q(Twf, Binary) ->
-    % TODO
-    {undefined, Twf}.
-%    Ctx = erlang:get(context),
-%    Req = Ctx#context.request,
-%    {Res, Req2}  = cowboy_http_req:qs_val(Binary, Req),
-%    Ctx2 = Ctx#context{request = Req2},
-%    erlang:put(context, Ctx2),
-%    Res.
+    case method(Twf) of
+        'POST' ->
+            {undefined, Twf}; %TODO
+        'GET' ->
+            {Res, Req} = cowboy_req:qs_val(Binary, Twf#twf.request),
+            Twf2 = Twf#twf{request = Req},
+            {Res, Twf2}
+    end.
 
 -spec method(Twf) -> cowboy_http:method() when Twf :: #twf{}.
 method(Twf) ->
