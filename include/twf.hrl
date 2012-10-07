@@ -5,6 +5,7 @@
 -record(panel, {?ELEMENT_BASE(element_panel), class, body}).
 -record(li, {?ELEMENT_BASE(element_li), class, body}).
 -record(list, {?ELEMENT_BASE(element_list), class, numbered=false, body}).
+-record(label, {?ELEMENT_BASE(element_label), class, for, body}).
 -record(form, {?ELEMENT_BASE(element_form), class, body, method}).
 -record(button, {?ELEMENT_BASE(element_button), class, body, name}).
 -record(input_text, {?ELEMENT_BASE(element_input_text), class, body, name}).
