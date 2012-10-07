@@ -8,5 +8,6 @@ render_element(Twf, Record) ->
     twf_tags:emit_tag(Twf, input, Record#input_text.body, [
         {type, <<"text">>},
         {name, Record#input_text.name},
+        {id, Record#input_text.id},
         {class, Record#input_text.class}
     ]).

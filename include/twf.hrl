@@ -8,7 +8,7 @@
 -record(label, {?ELEMENT_BASE(element_label), class, for, body}).
 -record(form, {?ELEMENT_BASE(element_form), class, body, method}).
 -record(button, {?ELEMENT_BASE(element_button), class, body, name}).
--record(input_text, {?ELEMENT_BASE(element_input_text), class, body, name}).
+-record(input_text, {?ELEMENT_BASE(element_input_text), class, body, name, id}).
 
 % table
 -record(table, {?ELEMENT_BASE(element_table), class, header, rows}).
