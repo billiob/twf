@@ -80,4 +80,7 @@ q(Twf, Binary) ->
 -spec method(Twf) -> cowboy_http:method() when Twf :: #twf{}.
 method(Twf) ->
     {Method, _} = cowboy_req:method(Twf#twf.request),
-    Method.
+    case Method of
+        A when is_atom(A) -> A;
+        B when is_binary(B) -> binary_to_atom(B, 'latin1')
+    end.
